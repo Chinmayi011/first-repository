@@ -1,1 +1,1 @@
-print("how atre you")
+print("how are you")
