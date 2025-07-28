@@ -1,6 +1,11 @@
 # first-repository
 print("welcome to git")
+ SDLC
+
+
+
  
+ main
 
 
  agile
