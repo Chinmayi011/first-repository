@@ -15,6 +15,8 @@ print("welcome to git")
  git
 ![image alt](https://github.com/Chinmayi011/first-repository/blob/8c23eb930fb30e72a33bf15e746ea984e2fc5aa3/git_simplilearn.png)
 
+![image alt](https://github.com/Chinmayi011/first-repository/blob/f7adf7800f66be7385ee52a37885dd37e691adf3/Agile%20course%20completion.png)
+
 
 
 ![image alt](https://github.com/Chinmayi011/first-repository/blob/5f69f42f001f8e80dc1a04090e60c53279626f48/Agile%20course%20completion.png)
