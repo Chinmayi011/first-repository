@@ -1,7 +1,6 @@
 # first-repository
 print("welcome to git")
- SDLC
-![image alt](https://github.com/Chinmayi011/first-repository/blob/c246f72a16a94235aa8154a330c190df1a0ec884/Agile_quiz.png)
+
 
 
 
@@ -13,7 +12,6 @@ print("welcome to git")
 ![image alt](https://github.com/Chinmayi011/first-repository/blob/8c23eb930fb30e72a33bf15e746ea984e2fc5aa3/git_simplilearn.png)
 
 
-![image alt](https://github.com/Chinmayi011/first-repository/blob/cd2e140bfa5964819fca4e77946e8b34afb5603b/Agile_quiz.png)
 
  main
  main
