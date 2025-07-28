@@ -1,7 +1,11 @@
 # first-repository
 print("welcome to git")
+ SDLC
 
 
+
+ 
+ main
 
 
  agile
@@ -13,6 +17,7 @@ print("welcome to git")
 
 
 
+![image alt](https://github.com/Chinmayi011/first-repository/blob/5f69f42f001f8e80dc1a04090e60c53279626f48/Agile%20course%20completion.png)
  main
  main
  main
