@@ -24,6 +24,8 @@ print("welcome to git")
 ![image alt](https://github.com/Chinmayi011/first-repository/blob/8c23eb930fb30e72a33bf15e746ea984e2fc5aa3/git_simplilearn.png)
 course completion
 ![image alt](https://github.com/Chinmayi011/first-repository/blob/f7adf7800f66be7385ee52a37885dd37e691adf3/Agile%20course%20completion.png)
+![image alt](https://github.com/Chinmayi011/first-repository/blob/37eaa275e64765fcf9b5f5068592e68fe3232ee3/sololearn.png)
+
 
 
 
