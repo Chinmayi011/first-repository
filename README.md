@@ -1,13 +1,13 @@
 # first-repository
 print("welcome to git")
-<<<<<<< HEAD
+ HEAD
 <img src="https://github.com/Chinmayi011/first-repository/blob/main/Agile_quiz.png" alt="image">
 <img src="https://github.com/Chinmayi011/first-repository/blob/main/git_simplilearn.png" alt="image">
 <img src="<https://github.com/Chinmayi011/first-repository/blob/SDLC/Agile%20course%20completion.png" alt="image">
 <img src="<https://github.com/Chinmayi011/first-repository/blob/main/linux1.png" alt="image">
 
 
-=======
+
  SDLC
 
 
@@ -31,4 +31,4 @@ course completion
  main
  main
  main
->>>>>>> 3a56239ac086f05b7ad58febed19d182a64437a7
+ 3a56239ac086f05b7ad58febed19d182a64437a7
