@@ -1,0 +1,43 @@
+/*
+3 * Complete the 'getTotalX' function below.
+4 *
+5 * The function is expected to return an INTEGER.
+6 * The function accepts following parameters:
+7 * 1. INTEGER_ARRAY a
+8 * 2. INTEGER_ARRAY b
+9 */
+10 int gcd(int a, int b){
+11 while(b){
+12 int tmp=b;
+13 b=a%b;
+14 a=tmp;
+15 }
+16 return a;
+17 }
+18 int lcm(int a, int b){
+19 return a*b/gcd(a,b);
+20 }
+21 int lcm_array(int *arr, int n){
+22 int res = arr[0];
+23 for(int i = 1; i<n; i++){
+24 res=lcm(res,arr[i]);
+25 }
+26 return res;
+27 }
+28 int gcd_array(int *arr, int n){
+29 int res=arr[0];
+30 for(int i=1; i<n; i++){
+31 res=gcd(res, arr[i]);
+32 }
+33 return res;
+34 }
+35 int getTotalX(int a_count, int* a, int b_count, int* b) {
+36 int l=lcm_array(a,a_count);
+int g=gcd_array(b,b_count);
+ int count =0;
+ for(int i=l;i<=g; i+=l){
+ if(g%i==0)count++;
+ }
+ return count;
+ 
+}

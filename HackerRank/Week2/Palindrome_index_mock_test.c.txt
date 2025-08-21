@@ -1,0 +1,40 @@
+#include <string.h>
+
+/*
+ * Complete the 'palindromeIndex' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts STRING s as parameter.
+ */
+
+int is_palindrome(char* s, int left, int right) {
+    while (left < right) {
+        if (s[left] != s[right])
+            return 0;
+        left++;
+        right--;
+    }
+    return 1;
+}
+
+int palindromeIndex(char* s) {
+    int len = strlen(s);
+    int left = 0;
+    int right = len - 1;
+    while (left < right) {
+        if (s[left] != s[right]) {
+            // Try removing left character
+            if (is_palindrome(s, left + 1, right))
+                return left;
+            // Try removing right character
+            if (is_palindrome(s, left, right - 1))
+                return right;
+            // No single removal can fix it
+            return -1;
+        }
+        left++;
+        right--;
+    }
+    // Already palindrome
+    return -1;
+}
