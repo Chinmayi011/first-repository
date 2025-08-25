@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+int truckTour(int petrolpumps_rows, int petrolpumps_columns, int** petrolpumps) {
+    int start = 0;
+    long long total_surplus = 0;
+    long long curr_surplus = 0;
+
+    for (int i = 0; i < petrolpumps_rows; i++) {
+        long long petrol = petrolpumps[i][0];
+        long long distance = petrolpumps[i][1];
+        long long diff = petrol - distance;
+        total_surplus += diff;
+        curr_surplus += diff;
+
+        if (curr_surplus < 0) {
+            start = i + 1;
+            curr_surplus = 0;
+        }
+    }
+
+    if (total_surplus < 0) 
+        return -1;
+
+    return start;
+}
+
+// Helper function to allocate 2D array dynamically
+int** create2DArray(int rows, int cols, int data[rows][cols]) {
+    int** arr = (int**)malloc(sizeof(int*) * rows);
+    for (int i = 0; i < rows; i++) {
+        arr[i] = (int*)malloc(sizeof(int) * cols);
+        for (int j = 0; j < cols; j++) {
+            arr[i][j] = data[i][j];
+        }
+    }
+    return arr;
+}
+
+// Helper function to free 2D array memory
+void free2DArray(int** arr, int rows) {
+    for (int i = 0; i < rows; i++) {
+        free(arr[i]);
+    }
+    free(arr);
+}
+
+int main() {
+    // Test case 1: Sample input from prompt
+    int data1[3][2] = {{1, 5}, {10, 3}, {3, 4}};
+    int** petrolpumps1 = create2DArray(3, 2, data1);
+    assert(truckTour(3, 2, petrolpumps1) == 1);
+    free2DArray(petrolpumps1, 3);
+
+    // Test case 2: Start at 0, surplus always positive
+    int data2[4][2] = {{6, 4}, {3, 2}, {7, 3}, {4, 2}};
+    int** petrolpumps2 = create2DArray(4, 2, data2);
+    assert(truckTour(4, 2, petrolpumps2) == 0);
+    free2DArray(petrolpumps2, 4);
+
+    // Test case 3: Impossible to complete circle (total petrol < total distance)
+    int data3[4][2] = {{1, 5}, {2, 6}, {3, 7}, {4, 8}};
+    int** petrolpumps3 = create2DArray(4, 2, data3);
+    assert(truckTour(4, 2, petrolpumps3) == -1);
+    free2DArray(petrolpumps3, 4);
+
+    // Test case 4: Single pump, enough petrol to travel distance
+    int data4[1][2] = {{10, 5}};
+    int** petrolpumps4 = create2DArray(1, 2, data4);
+    assert(truckTour(1, 2, petrolpumps4) == 0);
+    free2DArray(petrolpumps4, 1);
+
+    // Test case 5: Multiple pumps, start at last index
+    int data5[5][2] = {{2, 3}, {3, 4}, {4, 5}, {5, 7}, {10, 2}};
+    int** petrolpumps5 = create2DArray(5, 2, data5);
+    assert(truckTour(5, 2, petrolpumps5) == 4);
+    free2DArray(petrolpumps5, 5);
+
+    printf("All test cases passed.\n");
+    return 0;
+}

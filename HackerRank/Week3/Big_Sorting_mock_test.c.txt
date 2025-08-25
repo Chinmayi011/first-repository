@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+
+// Custom string comparison for big integer strings
+int compareBigInt(const void* a, const void* b) {
+    const char* s1 = *(const char**)a;
+    const char* s2 = *(const char**)b;
+    size_t l1 = strlen(s1);
+    size_t l2 = strlen(s2);
+    if (l1 != l2)
+        return l1 < l2 ? -1 : 1; // shorter means numerically smaller
+    return strcmp(s1, s2);
+}
+
+/*
+ * Complete the 'bigSorting' function below.
+ *
+ * The function is expected to return a STRING ARRAY.
+ * The function accepts STRING ARRAY unsorted as parameter.
+ *
+ * To return the string array from the function, 
+ * you should set the size of the array to be returned in result_count variable.
+ * Allocate the array statically or dynamically.
+ */
+char** bigSorting(int unsorted_count, char** unsorted, int* result_count) {
+    // Allocate memory for result array and copy strings
+    char** result = malloc(unsorted_count * sizeof(char*));
+    for (int i = 0; i < unsorted_count; i++) {
+        result[i] = malloc(strlen(unsorted[i]) + 1);
+        strcpy(result[i], unsorted[i]);
+    }
+
+    // Sort using qsort and compareBigInt
+    qsort(result, unsorted_count, sizeof(char*), compareBigInt);
+
+    *result_count = unsorted_count;
+    return result;
+}
+
+// Helper: Free a dynamically allocated string array
+void freeStringArray(char** arr, int n) {
+    for (int i = 0; i < n; i++) free(arr[i]);
+    free(arr);
+}
+
+// Test harness
+int main() {
+    // Example 1
+    char *arr1[] = {"1","200","150","3"};
+    int out_size;
+    char **sorted1 = bigSorting(4, arr1, &out_size);
+    assert(out_size == 4);
+    assert(strcmp(sorted1[0], "1") == 0);
+    assert(strcmp(sorted1[1], "3") == 0);
+    assert(strcmp(sorted1[2], "150") == 0);
+    assert(strcmp(sorted1[3], "200") == 0);
+    freeStringArray(sorted1, 4);
+
+    // Example 2: Large numbers
+    char *arr2[] = {
+        "31415926535897932384626433832795",
+        "1",
+        "3",
+        "10",
+        "3",
+        "5"
+    };
+    char *expected2[] = {
+        "1",
+        "3",
+        "3",
+        "5",
+        "10",
+        "31415926535897932384626433832795"
+    };
+    char **sorted2 = bigSorting(6, arr2, &out_size);
+    assert(out_size == 6);
+    for (int i = 0; i < 6; i++)
+        assert(strcmp(sorted2[i], expected2[i]) == 0);
+    freeStringArray(sorted2, 6);
+
+    // Example 3: Many digits, must be sorted numerically not lexically
+    char *arr3[] = {
+        "100",
+        "123034798498573417183401192371",
+        "3084193741082937",
+        "3084193741082938",
+        "111",
+        "200"
+    };
+    char *expected3[] = {
+        "100",
+        "111",
+        "200",
+        "3084193741082937",
+        "3084193741082938",
+        "123034798498573417183401192371"
+    };
+    char **sorted3 = bigSorting(6, arr3, &out_size);
+    for (int i = 0; i < 6; i++)
+        assert(strcmp(sorted3[i], expected3[i]) == 0);
+    freeStringArray(sorted3, 6);
+
+    printf("All test cases passed.\n");
+    return 0;
+}
