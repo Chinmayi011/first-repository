@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int freq;
+    char data;
+    struct node *left;
+    struct node *right;
+};
+
+void decode_huff(struct node *root, char *s) {
+    if (!root || !s) return;
+
+    // Edge case: tree has a single leaf (only one unique character)
+    if (root->left == NULL && root->right == NULL) {
+        for (int i = 0; s[i] != '\0'; ++i) {
+            putchar(root->data);
+        }
+        return;
+    }
+
+    struct node *current = root;
+    for (int i = 0; s[i] != '\0'; ++i) {
+        current = (s[i] == '0') ? current->left : current->right;
+
+        if (current->left == NULL && current->right == NULL) {
+            putchar(current->data);   // print decoded char only
+            current = root;           // reset to root
+        }
+    }
+}
+int main(){
+    return 0;
+}

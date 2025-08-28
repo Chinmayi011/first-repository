@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// Helper function to check if a year is a leap year
+int is_leap(int y) {
+    return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
+}
+
+// Function to check if a date is a "lucky date"
+int is_lucky_date(int d, int m, int y) {
+    // Concatenate day, month, and year into a single integer
+    int num = d * 10000 + m * 100 + y;
+    
+    // Check if the number is divisible by 4 or 7
+    return (num % 4 == 0) || (num % 7 == 0);
+}
+
+// Function to validate the date
+int valid_date(int d, int m, int y) {
+    if (m < 1 || m > 12) return 0;
+    if (d < 1 || d > 31) return 0;
+    
+    int days_in_month[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (is_leap(y)) days_in_month[2] = 29;
+    
+    if (d > days_in_month[m]) return 0;
+    
+    return 1;
+}
+
+int main() {
+    char s[100];
+    scanf("%s", s);
+    int d1 = (s[0] - '0') * 10 + (s[1] - '0');
+    int m1 = (s[3] - '0') * 10 + (s[4] - '0');
+    int y1 = (s[6] - '0') * 1000 + (s[7] - '0') * 100 + (s[8] - '0') * 10 + (s[9] - '0');
+
+    scanf("%s", s);
+    int d2 = (s[0] - '0') * 10 + (s[1] - '0');
+    int m2 = (s[3] - '0') * 10 + (s[4] - '0');
+    int y2 = (s[6] - '0') * 1000 + (s[7] - '0') * 100 + (s[8] - '0') * 10 + (s[9] - '0');
+    
+    int result = 0;
+    while (1) {
+        if (d1 == d2 && m1 == m2 && y1 == y2) {
+            if (is_lucky_date(d1, m1, y1)) {
+                result++;
+            }
+            break;
+        }
+        
+        if (is_lucky_date(d1, m1, y1)) {
+            result++;
+        }
+        
+        d1++;
+        if (!valid_date(d1, m1, y1)) {
+            m1++;
+            d1 = 1;
+            if (!valid_date(d1, m1, y1)) {
+                y1++;
+                m1 = 1;
+            }
+        }
+    }
+    
+    printf("%d\n", result);
+    
+    return 0;
+}

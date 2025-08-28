@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+
+
+
+
+void strip_newline(char* str) {
+    int len = strlen(str);
+    if (len > 0 && str[len-1] == '\n') {
+        str[len-1] = '\0';
+    }
+}
+
+void strings_xor(const char* s, const char* t){
+    int n = strlen(s);
+    for(int i = 0; i < n; i++){
+        putchar(s[i] == t[i] ? '0' : '1');
+    }
+    putchar('\n');
+}
+
+int main() {
+    char s[10001], t;
+    fgets(s, sizeof(s), stdin);
+    fgets(t, sizeof(t), stdin);
+    strip_newline(s);
+    strip_newline(t);
+    strings_xor(s, t);
+    return 0;
+}

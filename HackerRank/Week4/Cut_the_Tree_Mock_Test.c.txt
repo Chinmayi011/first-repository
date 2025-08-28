@@ -1,0 +1,84 @@
+ #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#define MAXN 100005
+#define MAXE 200005   // 2 * (n-1) edges in adjacency
+
+int values[MAXN];
+int head[MAXN], to[MAXE], nxt[MAXE], idx;
+long long subtree[MAXN];
+int n;
+
+void addEdge(int u, int v) {
+    to[idx] = v;
+    nxt[idx] = head[u];
+    head[u] = idx++;
+}
+
+long long dfs(int u, int parent, long long totalSum, long long *minDiff) {
+    long long sum = values[u];
+    
+    for (int e = head[u]; e != -1; e = nxt[e]) {
+        int v = to[e];
+        if (v != parent) {
+            sum += dfs(v, u, totalSum, minDiff);
+        }
+    }
+    
+    if (u != 0) {
+        long long diff = llabs(totalSum - 2 * sum);
+        if (diff < *minDiff) {
+            *minDiff = diff;
+        }
+    }
+    subtree[u] = sum;
+    return sum;
+}
+
+int cutTheTree(int data_count, int* data, int edges_rows, int edges_columns, int** edges) {
+    n = data_count;
+    
+    for (int i = 0; i < n; i++) values[i] = data[i];
+    for (int i = 0; i < n; i++) head[i] = -1;
+    idx = 0;
+    
+    for (int i = 0; i < edges_rows; i++) {
+        int u = edges[i][0] - 1;
+        int v = edges[i][1] - 1;
+        addEdge(u, v);
+        addEdge(v, u);
+    }
+    
+    long long totalSum = 0;
+    for (int i = 0; i < n; i++) totalSum += values[i];
+    
+    long long minDiff = LLONG_MAX;
+    dfs(0, -1, totalSum, &minDiff);
+    
+    return (int)minDiff;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    
+    int* data = malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) scanf("%d", &data[i]);
+    
+    int** edges = malloc((n-1) * sizeof(int*));
+    for (int i = 0; i < n-1; i++) {
+        edges[i] = malloc(2 * sizeof(int));
+        scanf("%d %d", &edges[i][0], &edges[i][1]);
+    }
+    
+    int result = cutTheTree(n, data, n-1, 2, edges);
+    printf("%d\n", result);
+    
+    // cleanup
+    free(data);
+    for (int i = 0; i < n-1; i++) free(edges[i]);
+    free(edges);
+    
+    return 0;
+}

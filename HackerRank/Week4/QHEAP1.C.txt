@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+#define MAXQ 100000
+
+long long heap[MAXQ+5];  
+int size = 0;
+
+// Swap helper
+void swap(long long *a, long long *b) {
+    long long temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Heapify up (for insert)
+void heapifyUp(int idx) {
+    while (idx > 0) {
+        int parent = (idx - 1) / 2;
+        if (heap[parent] > heap[idx]) {
+            swap(&heap[parent], &heap[idx]);
+            idx = parent;
+        } else break;
+    }
+}
+
+// Heapify down (for delete root)
+void heapifyDown(int idx) {
+    while (1) {
+        int left = 2*idx + 1;
+        int right = 2*idx + 2;
+        int smallest = idx;
+
+        if (left < size && heap[left] < heap[smallest]) smallest = left;
+        if (right < size && heap[right] < heap[smallest]) smallest = right;
+
+        if (smallest != idx) {
+            swap(&heap[smallest], &heap[idx]);
+            idx = smallest;
+        } else break;
+    }
+}
+
+// Insert element
+void insert(long long val) {
+    heap[size] = val;
+    heapifyUp(size);
+    size++;
+}
+
+// Delete element (linear search since distinct)
+void deleteVal(long long val) {
+    int idx = -1;
+    for (int i = 0; i < size; i++) {
+        if (heap[i] == val) {
+            idx = i;
+            break;
+        }
+    }
+    if (idx == -1) return; // should not happen as per problem
+
+    heap[idx] = heap[size-1]; 
+    size--;
+
+    // Restore heap property
+    heapifyUp(idx);
+    heapifyDown(idx);
+}
+
+// Print minimum
+void printMin() {
+    if (size > 0) {
+        printf("%lld\n", heap[0]);
+    }
+}
+
+int main() {
+
+   int Q;
+   scanf("%d",&Q);
+   
+   for(int i=0; i<Q; i++){
+    int type;
+    long long v;
+    scanf("%d", &type);
+    
+    if(type==1){
+        scanf("%lld",&v);
+        insert(v);
+    }else if (type==2){
+        scanf("%lld",&v);
+        deleteVal(v);
+        
+    }else if(type==3){
+        printMin();
+        
+    }
+   } /* Enter your code here. Read input from STDIN. Print output to STDOUT */    
+    return 0;
+}

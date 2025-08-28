@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// DFS function to explore component
+int dfs(int node, int n, int** adj, int* adj_size, int* visited) {
+    int stack[2*n+5];
+    int top = 0, count = 0;
+    stack[top++] = node;
+    visited[node] = 1;
+    
+    while (top > 0) {
+        int u = stack[--top];
+        count++;
+        for (int i = 0; i < adj_size[u]; i++) {
+            int v = adj[u][i];
+            if (!visited[v]) {
+                visited[v] = 1;
+                stack[top++] = v;
+            }
+        }
+    }
+    return count;
+}
+
+int* componentsInGraph(int gb_rows, int gb_columns, int** gb, int* result_count) {
+    // Maximum node index = 2N
+    int N = 0;
+    for (int i = 0; i < gb_rows; i++) {
+        if (gb[i][1] > N) N = gb[i][1]; // second column goes up to 2N
+    }
+    
+    // adjacency
+    int** adj = (int*)malloc((N+1) * sizeof(int));
+    int* adj_size = (int*)calloc(N+1, sizeof(int));
+    
+    // count degrees
+    for (int i = 0; i < gb_rows; i++) {
+        int u = gb[i][0];
+        int v = gb[i][1];
+        adj_size[u]++;
+        adj_size[v]++;
+    }
+    
+    // allocate adjacency lists
+    for (int i = 1; i <= N; i++) {
+        adj[i] = (int*)malloc(adj_size[i] * sizeof(int));
+        adj_size[i] = 0; // reset
+    }
+    
+    // fill adjacency list
+    for (int i = 0; i < gb_rows; i++) {
+        int u = gb[i][0];
+        int v = gb[i][1];
+        adj[u][adj_size[u]++] = v;
+        adj[v][adj_size[v]++] = u;
+    }
+    
+    // visited array
+    int* visited = (int*)calloc(N+1, sizeof(int));
+    
+    int min_size = 1e9, max_size = 0;
+    
+    // explore components
+    for (int i = 1; i <= N; i++) {
+        if (!visited[i]) {
+            int size = dfs(i, N, adj, adj_size, visited);
+            if (size > 1) { // ignore single nodes
+                if (size < min_size) min_size = size;
+                if (size > max_size) max_size = size;
+            }
+        }
+    }
+    
+    // prepare result
+    *result_count = 2;
+    int* result = (int*)malloc(2 * sizeof(int));
+    result[0] = min_size;
+    result[1] = max_size;
+    
+    // free memory
+    for (int i = 1; i <= N; i++) free(adj[i]);
+    free(adj);
+    free(adj_size);
+    free(visited);
+    
+    return result;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    
+    int** gb = (int*)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        gb[i] = (int*)malloc(2 * sizeof(int));
+        scanf("%d %d", &gb[i][0], &gb[i][1]);
+    }
+    
+    int result_count;
+    int* result = componentsInGraph(n, 2, gb, &result_count);
+    
+    for (int i = 0; i < result_count; i++) {
+        printf("%d ", result[i]);
+    }
+    printf("\n");
+    
+    for (int i = 0; i < n; i++) free(gb[i]);
+    free(gb);
+    free(result);
+    
+    return 0;
+}
